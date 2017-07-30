@@ -28,10 +28,23 @@ public class PersonIOUtils {
     }
 
     /**
+     * @throws FileNotFoundException
      * @throws IOException
      * @throws IllegalFormatException
      */
-    public static List<Person> readPeople(BufferedReader reader) throws IOException {
+    public static Person readPersonFromFile(String fileName) throws IOException {
+        // try-with-resources
+        try (BufferedReader reader = new BufferedReader(new FileReader(fileName))) {
+            String line = reader.readLine();
+            return parsePerson(line);
+        }
+    }
+
+    /**
+     * @throws IOException
+     * @throws IllegalFormatException
+     */
+    private static List<Person> readPeople(BufferedReader reader) throws IOException {
         List<Person> people = new ArrayList<>();
 
         String line;
@@ -40,19 +53,6 @@ public class PersonIOUtils {
             people.add(person);
         }
         return people;
-    }
-
-    /**
-     * @throws FileNotFoundException
-     * @throws IOException
-     * @throws IllegalFormatException
-     */
-    private static Person readPersonFromFile(String fileName) throws IOException {
-        // try-with-resources
-        try (BufferedReader reader = new BufferedReader(new FileReader(fileName))) {
-            String line = reader.readLine();
-            return parsePerson(line);
-        }
     }
 
     /**
